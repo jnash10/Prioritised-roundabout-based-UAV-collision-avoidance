@@ -32,7 +32,7 @@ def create_plot(filename):
 
     fig, axs = plt.subplots(1,2, sharey=False, figsize=(10,10))
     axs[0].bar(['1-2','2-3','3-4','4-5','5-6'],[len(bin) for bin in bins])
-    axs[1].set_ylim([0,40])
+    #axs[1].set_ylim([0,40])
     axs[1].boxplot(bins)
 
 
@@ -41,12 +41,13 @@ def create_plot(filename):
 
 
 
-    fig.savefig(f'outputs/{filename}/times.png')
+
+    fig.savefig(f'outputs/{filename}/times.eps')
     plt.show()
 
 
 def create_pathplot(filename):
-    n=40
+    n=20
     datas = []
     for i in range(n):
         datas.append(pd.read_csv(f"outputs/{filename}/uav{i+1}.csv"))
@@ -61,7 +62,7 @@ def create_pathplot(filename):
     #plt.legend()
 
     plt.show()
-    fig.savefig(f'outputs/{filename}/path.png')
+    fig.savefig(f'outputs/{filename}/path.eps')
 
 name = input("please enter filename: ")
 create_plot(name)
