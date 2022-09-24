@@ -57,7 +57,7 @@ class Uav:
         for drone in drones:
             if drone.name != self.name:
                 if np.linalg.norm((drone.x-self.x,drone.y-self.y))<detection_distance:
-                    if self.zem(drone) < safe_distance:
+                    if self.zem(drone) < safe_distance and self.t_go(drone)>=0:
                         angle = np.arctan2(drone.y-self.y,drone.x-self.x) 
                         curvec = ((drone.priority/self.priority)**2)*np.array([np.cos(angle),np.sin(angle)])/np.linalg.norm((drone.x-self.x,drone.y-self.y))**2
                         tangential_vec = ((drone.priority/self.priority)**2)*np.array([np.sin(angle),-np.cos(angle)])
@@ -109,7 +109,7 @@ class Uav:
         self.pub.publish(self.msg)
 
     def check_end(self, drones):
-        if self.msg.linear.x==0 and self.msg.linear.y==0 and self.check==True:
+        if np.linalg.norm(np.array([self.goal[1]-self.y,self.goal[0]-self.x]))<=0.5 and self.check==True:
             #self.time = (rospy.Time.now()-self.time).secs
             self.time = (rospy.Time.now()-self.time).to_sec()
             print(self.time)
@@ -132,8 +132,8 @@ def take_off(drones):
     #     drone.pub.publish(msg)
     msg = Twist()
     msg.linear.z=1
-    rate = rospy.Rate(10)
-    for i in range(30):
+    #rate = rospy.Rate(10)
+    for i in range(300):
         for drone in drones:
             drone.pub.publish(msg)
         rate.sleep()
@@ -142,7 +142,7 @@ def take_off(drones):
     msg.linear.z=0
     for drone in drones:
         drone.pub.publish(msg)
-    time.sleep(3)
+    #time.sleep(3)
     
 
 
@@ -165,7 +165,8 @@ def create_drones(goals):
     drones = []
     for i in range(len(goals)):
         #drones.append(Uav(f'uav{i+1}', 10, np.random.normal(loc=(3), scale=1), goals[i]))
-        drones.append(Uav(f'uav{i+1}', 10, 3, goals[i]))
+        #drones.append(Uav(f'uav{i+1}', 10, 3, goals[i]))
+        drones.append(Uav(f'uav{i+1}', 10, (i%5)+1, goals[i]))
     return drones
     
 
