@@ -57,7 +57,7 @@ class Uav:
         for drone in drones:
             if drone.name != self.name:
                 if np.linalg.norm((drone.x-self.x,drone.y-self.y))<detection_distance:
-                    if self.zem(drone) < safe_distance:
+                    if self.zem(drone) < safe_distance and self.t_go(drone)>=0:
                         angle = np.arctan2(drone.y-self.y,drone.x-self.x) 
                         curvec = ((drone.priority/self.priority)**2)*np.array([np.cos(angle),np.sin(angle)])/np.linalg.norm((drone.x-self.x,drone.y-self.y))**2
                         tangential_vec = ((drone.priority/self.priority)**2)*np.array([np.sin(angle),-np.cos(angle)])

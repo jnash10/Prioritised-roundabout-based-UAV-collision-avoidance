@@ -59,9 +59,10 @@ class Uav:
                 if np.linalg.norm((drone.x-self.x,drone.y-self.y))<detection_distance:
                     if self.zem(drone) < safe_distance and self.t_go(drone)>=0:
                         angle = np.arctan2(drone.y-self.y,drone.x-self.x) 
-                        curvec = ((drone.priority/self.priority)**2)*np.array([np.cos(angle),np.sin(angle)])/np.linalg.norm((drone.x-self.x,drone.y-self.y))**2
-                        tangential_vec = ((drone.priority/self.priority)**2)*np.array([np.sin(angle),-np.cos(angle)])
+                        curvec = ((drone.priority/self.priority)**1)*np.array([np.cos(angle),np.sin(angle)])/np.linalg.norm((drone.x-self.x,drone.y-self.y))**2
+                        tangential_vec = ((drone.priority/self.priority)**1)*np.array([np.sin(angle),-np.cos(angle)])
                         vec += self.v*(tangential_vec + curvec)/(self.priority/drone.priority)**2
+                        #vec += self.v*(tangential_vec + curvec)
         return vec
 
     def t_go(self,drone):
@@ -75,7 +76,7 @@ class Uav:
         return t
 
     def zem(self, drone):
-        print(self.name, self.yaw)
+        #print(self.name, self.yaw)
         v1 = self.vreal
         v2 = drone.vreal
 
