@@ -30,19 +30,23 @@ def create_plot(filename):
             bin.pop(0)
 
 
-    fig, axs = plt.subplots(1,2, sharey=False, figsize=(12,9))
+    fig, axs = plt.subplots(1,2, sharey=False, figsize=(14,9))
     axs[0].bar(['1-2','2-3','3-4','4-5','5-6'],[len(bin)-1 for bin in bins])
-    fig.suptitle(f'Number of drones = {n}')
+    fig.suptitle(f'Number of drones = {len(data)}')
     axs[0].set_title(f'Distribution of priority')
+    axs[0].set_xlabel('Priority')
+    axs[0].set_ylabel('No .of UAVs')
     maxi = max([max(bin) for bin in bins])
     axs[1].set_ylim([0,maxi+5])
     axs[1].boxplot(bins)
+    axs[1].set_xlabel('Priority')
+    axs[1].set_ylabel('Time taken (seconds)')
     axs[1].set_title('Time taken v/s priority')
 
     fig.savefig(f'outputs/{filename}/times.eps')
     plt.show()
 
-    fig, ax=plt.subplots(1,1,figsize=(7,12))
+    fig, ax=plt.subplots(1,1,figsize=(10,12))
     ax.bar(['1-2','2-3','3-4','4-5','5-6'],[len(bin)-1 for bin in bins])
     ax.set_title(f'Distribution of priority.')
     ax.set_xlabel('Priority')
@@ -51,12 +55,12 @@ def create_plot(filename):
     plt.show()
 
 
-    fig, ax=plt.subplots(1,1,figsize=(7,12))
+    fig, ax=plt.subplots(1,1,figsize=(10,12))
     ax.boxplot(bins)
     ax.set_title('Time taken v/s priority')
     ax.set_ylim([0,maxi+5])
     ax.set_xlabel('priority')
-    ax.set_ylabel('Time')
+    ax.set_ylabel('Time(seconds)')
     fig.savefig(f'outputs/{filename}/bigtime.eps')
     plt.show()
 

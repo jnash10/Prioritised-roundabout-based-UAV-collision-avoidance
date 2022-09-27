@@ -18,7 +18,7 @@ timefile = open('time.csv','w')
 timefile.write('name,time,priority\n')
 node = rospy.init_node("avoid_cllision")
 rate = rospy.Rate(100)
-detection_distance = 100
+detection_distance = 50
 safe_distance = 2
 maneuver_distance = 5
 class Uav:
@@ -59,10 +59,10 @@ class Uav:
                 if np.linalg.norm((drone.x-self.x,drone.y-self.y))<detection_distance:
                     if self.zem(drone) < safe_distance and self.t_go(drone)>=0:
                         angle = np.arctan2(drone.y-self.y,drone.x-self.x) 
-                        curvec = ((drone.priority/self.priority)**1)*np.array([np.cos(angle),np.sin(angle)])/np.linalg.norm((drone.x-self.x,drone.y-self.y))**2
-                        tangential_vec = ((drone.priority/self.priority)**1)*np.array([np.sin(angle),-np.cos(angle)])
-                        vec += self.v*(tangential_vec + curvec)/(self.priority/drone.priority)**2
-                        #vec += self.v*(tangential_vec + curvec)
+                        curvec = 2*((drone.priority/self.priority)**4)*np.array([np.cos(angle),np.sin(angle)])/np.linalg.norm((drone.x-self.x,drone.y-self.y))**2
+                        tangential_vec = ((drone.priority/self.priority)**4)*np.array([np.sin(angle),-np.cos(angle)])
+                        #vec += self.v*(tangential_vec + curvec)/(self.priority/drone.priority)**2
+                        vec += self.v*(tangential_vec + curvec)
         return vec
 
     def t_go(self,drone):
@@ -110,7 +110,7 @@ class Uav:
         self.pub.publish(self.msg)
 
     def check_end(self, drones):
-        if np.linalg.norm(np.array([self.goal[1]-self.y,self.goal[0]-self.x]))<=0.5 and self.check==True:
+        if (np.linalg.norm(np.array([self.goal[1]-self.y,self.goal[0]-self.x]))<=2) and self.check==True:
             #self.time = (rospy.Time.now()-self.time).secs
             self.time = (rospy.Time.now()-self.time).to_sec()
             print(self.time)
@@ -161,13 +161,14 @@ def create_points():
         goals.append((radius*-np.cos(theta+noise), radius*-np.sin(theta+noise)))
     return goals
 
-np.random.seed(73)
+np.random.seed(72)
 def create_drones(goals):
     drones = []
     for i in range(len(goals)):
-        #drones.append(Uav(f'uav{i+1}', 10, np.random.normal(loc=(3), scale=1), goals[i]))
-        #drones.append(Uav(f'uav{i+1}', 10, 3, goals[i]))
-        drones.append(Uav(f'uav{i+1}', 10, (i%5)+1, goals[i]))
+        #drones.append(Uav(f'uav{i+1}', 8, np.random.normal(loc=(3.5), scale=1.2), goals[i]))
+        drones.append(Uav(f'uav{i+1}', 8, 3, goals[i]))
+        #drones.append(Uav(f'uav{i+1}', 8, (i%5)+1, goals[i]))
+        rate.sleep()
     return drones
     
 
