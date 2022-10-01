@@ -1,6 +1,6 @@
 import numpy as np
 
-radius = 100
+radius =120
 n = int(input("how many drones you want? : "))
 starts = []
 

@@ -7,7 +7,7 @@ import os
 
 n=40
 def create_plot(filename): 
-    data = pd.read_csv('time.csv')
+    data = pd.read_csv(f'outputs/{filename}/time.csv')
 
 
     bins = [[0],[0],[0],[0],[0]]
@@ -57,14 +57,20 @@ def create_plot(filename):
 
     fig, ax=plt.subplots(1,1,figsize=(10,12))
     ax.boxplot(bins)
-    ax.set_title('Time taken v/s priority')
+    ax.set_title('Time taken v/s priority', fontdict=font)
     ax.set_ylim([0,maxi+5])
-    ax.set_xlabel('priority')
-    ax.set_ylabel('Time(seconds)')
+    ax.set_xlabel('priority', fontdict=font)
+    ax.set_ylabel('Time(seconds)', fontdict=font)
+    ax.set_ylim((20,40))
+    ax.tick_params(axis='both', which='major', labelsize=14)
     fig.savefig(f'outputs/{filename}/bigtime.eps')
     plt.show()
 
-
+font = {'family': 'serif',
+        'color':  'black',
+        'weight': 'normal',
+        'size': 20,
+        }
 
 def create_pathplot(filename):
     global n
@@ -73,7 +79,7 @@ def create_pathplot(filename):
         datas.append(pd.read_csv(f"outputs/{filename}/uav{i+1}.csv"))
 
     fig, ax = plt.subplots(figsize=(12,12))
-    ax.set(xlim=(-100,100), ylim=(-100,100))
+    ax.set(xlim=(-120,120), ylim=(-120,120))
 
 
     for i in range(n):

@@ -161,12 +161,12 @@ def create_points():
         goals.append((radius*-np.cos(theta+noise), radius*-np.sin(theta+noise)))
     return goals
 
-np.random.seed(72)
+np.random.seed(42)
 def create_drones(goals):
     drones = []
     for i in range(len(goals)):
-        #drones.append(Uav(f'uav{i+1}', 8, np.random.normal(loc=(3.5), scale=1.2), goals[i]))
-        drones.append(Uav(f'uav{i+1}', 8, 3, goals[i]))
+        drones.append(Uav(f'uav{i+1}', 8, np.random.normal(loc=(3.5), scale=1.2), goals[i]))
+        #drones.append(Uav(f'uav{i+1}', 8, 3, goals[i]))
         #drones.append(Uav(f'uav{i+1}', 8, (i%5)+1, goals[i]))
         rate.sleep()
     return drones
