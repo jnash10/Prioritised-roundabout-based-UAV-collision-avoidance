@@ -71,7 +71,7 @@ class Uav:
                         theta = np.pi/2
                         rot = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
                         f_v_ = np.dot(rot, f_v)
-                        del_v = ((drone.priority/self.priority)**2)*(-f_v + f_v_)
+                        del_v = ((drone.priority/self.priority)**1)*(-f_v + f_v_)
 
                         vec = vec  + self.v*del_v
         return vec
@@ -114,7 +114,7 @@ class Uav:
         else:
             vec = -self.avoid_collision(drones) + self.go_to_goal(drones)
 
-        vec = (min(norm(vec), 2*self.v)/norm(vec))*vec
+        vec = (min(np.linalg.norm(vec), 2*self.v)/np.linalg.norm(vec))*vec
         angle = np.arctan2(vec[1],vec[0]) - self.yaw
         
         norm = np.linalg.norm(vec)

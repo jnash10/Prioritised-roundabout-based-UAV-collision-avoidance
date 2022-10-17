@@ -5,7 +5,7 @@ import pandas as pd
 
 import os
 
-n=40
+n=3
 def create_plot(filename): 
     data = pd.read_csv(f'outputs/{filename}/time.csv')
 

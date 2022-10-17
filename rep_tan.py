@@ -21,7 +21,7 @@ rate = rospy.Rate(1000)
 bigrate = rospy.Rate(1)
 detection_distance = 100
 safe_distance = 3
-maneuver_distance = 40
+maneuver_distance = 10
 threshold=0.2
 #k=2*10**1
 k=1
@@ -70,8 +70,8 @@ class Uav:
                         f_v = (k/(dist-safe_distance)**3)*(1/(dist-(self.priority/drone.priority)*safe_distance) - 1/detection_distance)*np.array([drone.x-self.x, drone.y-self.y])
                         theta = np.pi/2
                         rot = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
-                        #f_v_ = np.dot(rot, f_v)
-                        f_v_ = np.array([0,0])
+                        f_v_ = np.dot(rot, f_v)
+                        #f_v_ = np.array([0,0])
                         del_v = f_v + f_v_
                         #print(self.name,"del_V", del_v ,"v_real", self.vreal)
                         #del_v = (f_v + f_v_)
@@ -187,7 +187,7 @@ def create_drones(goals):
     drones = []
     for i in range(len(goals)):
         #drones.append(Uav(f'uav{i+1}', 5, np.random.normal(loc=(3.5), scale=1.2), goals[i]))
-        drones.append(Uav(f'uav{i+1}', 5, 3, goals[i]))
+        drones.append(Uav(f'uav{i+1}', 1, 3, goals[i]))
         #drones.append(Uav(f'uav{i+1}', 5, (i%5)+1, goals[i]))
         rate.sleep()
     return drones
