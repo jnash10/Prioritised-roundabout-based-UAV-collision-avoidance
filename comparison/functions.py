@@ -23,6 +23,16 @@ def clip(vector, mag):
 def go_to_goal(v): #return force vector for go-to-goal
     return (kv/dist(v.p, v.g))*np.array([v.g[0]-v.p[0], v.g[1]-v.p[1]])
 
+def P(v1, v2):
+    return (v2.priority/v1.priority)**alpha
+
+
+def repulse():
+    pass
+
+
+
+
 
     
 
